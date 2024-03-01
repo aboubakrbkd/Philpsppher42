@@ -31,60 +31,77 @@ void	parse_argument_and_fill(char **argv, int argc, t_table *philo)
 		philo->number_of_meals = 0;
 }
 
-
-void	safe_mutex_unlock(pthread_mutex_t *mutex, int flag)
+void	safe_mutex_handler(pthread_mutex_t *mutex, int flag)
 {
-	if (flag == 1)
-		pthread_mutex_lock(mutex);
-	else if (flag == 0)
-		pthread_mutex_unlock(mutex);
-	else if (flag == 2)
+	if (flag == INIT)
 		pthread_mutex_init(mutex, NULL);
-	else if (flag == 3)
+	else if (flag == DESTROY)
 		pthread_mutex_destroy(mutex);
+	else if (flag == LOCK)
+		pthread_mutex_lock(mutex);
+	else if (flag == UNLOCK)
+		pthread_mutex_unlock(mutex);
+	else
+		print_error();
 }
 
-void	safe_thread(pthread_t *thread, void *(*foo)(void *), void	*data, int flag)
+void	safe_thread_handler(pthread_t *thread, void *(*foo)(void *), void *data, int flag)
 {
-	if(flag == 0)
-		pthread_create(thread, NULL, foo, data);
-	else if (flag == 1)
+	if (flag == CREAT)
+		pthread_create(thread, 	NULL, foo , data);
+	else if (flag == JOIN)
 		pthread_join(*thread, NULL);
-	else if (flag == 2)
+	else if (flag == DETACH)
 		pthread_detach(*thread);
+	else
+		print_error();
 }
 
-void	philo_init(t_table *philo)
+void	assign_forks(t_philo *philo, t_fork *forks, int position)
 {
-	int i = 0;
-	t_philo *philos;
-	while (i < philo->philo_nbr)
+	if (philo->id % 2 == 0)
 	{
-		philos = philo->philos + i;
-		philos->id = i + 1;
-		philos->full = 0;
-		philos->meals_counter = 0;
-		philos->
-		
+		philo->right_fork = &forks[position];
+		philo->left_fork = &forks[(position + 1) % philo->table->philo_nbr];
+	}
+	else
+	{
+		philo->left_fork = &forks[position];
+		philo->right_fork = &forks[(position + 1) % philo->table->philo_nbr];
 	}
 }
-void	data_init(t_table *philo)
+void	philo_init(t_table *philos)
 {
 	int i = 0;
+	t_philo *philo;
+	while (i < philos->philo_nbr)
+	{
+		philo = philos->philos + i;
+		philo->id = i + 1;
+		philo->full = 0;
+		philo->meal_counter = 0;
+		philo->table = philos;
+		/*assign forks*/
+		assign_forks(philo, philos->forks, i);
+	}
+}
+void	*data_init(t_table *philo)
+{
+	int	i = 0;
 	philo->end_simulation = 0;
-	philo->philos = malloc(sizeof(t_table) * philo->philo_nbr);
+	philo->philos = malloc(sizeof(t_philo) * philo->philo_nbr);
 	if (!philo->philos)
-		return(NULL);
-	philo->forks = malloc(sizeof(t_table) * philo->philo_nbr);
+		return (NULL);
+	philo->forks = malloc(sizeof(t_fork) * philo->philo_nbr);
 	if (!philo->forks)
 		return (NULL);
 	while (i < philo->philo_nbr)
 	{
-		safe_mutex_unlock(&philo->forks[i].fork, 2);
-		philo->forks[i].fork_id = i; // debug;	
+		safe_mutex_handler(&philo->forks[i].fork, INIT);
+		philo->forks->fork_id = i; // debug;
+		i++;
 	}
-	phill_init(philo);
-	
+	philo_init(philo);
 }
 int main(int argc, char **argv)
 {

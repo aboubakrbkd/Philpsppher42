@@ -20,45 +20,52 @@
 #include <limits.h>
 #include <sys/time.h> 
 
-// typedef struct s_list
-// {
-//     long num_philo;
-//     long time_to_die;
-//     long time_to_eat;
-//     long time_to_sleep;
-//     long number_of_meals;
-//     struct s_list *next;
-// }			t_list;
 
+#define INIT 0
+#define DESTROY 1
+#define LOCK 2
+#define UNLOCK 3
+#define CREAT 4
+#define JOIN 5 
+#define DETACH 6
+
+
+typedef struct s_table	t_table;
+/* data of the forks*/
 typedef struct s_fork
 {
     pthread_mutex_t fork;
     int fork_id;
-
 }               t_fork;
 
+/*data of all*/
 typedef struct s_philo
 {
-    int id;//the id of the philo;
-    int meals_counter;//is the argv[5];
-    int full;//to check if he eats the max meals_counter or not;
-    int last_meal_time;//time past from last meal;
-    t_fork *left_fork;
+    int id;
+    int meal_counter;
+    int full;
+    int last_meal_time; // to check if the philosopher has die
+    t_fork *left_fork; // a fork is a mutex
     t_fork *right_fork;
-    pthread_t thread_id;
+    pthread_t thread_id;  // a philo is a thread;
+    t_table *table;
 }               t_philo;
+
 typedef struct s_table
 {
-    int philo_nbr;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int number_of_meals;
-    int start_simulation;
-    int end_simulation;
-    t_fork *forks;
-    t_philo *philos;
+    int philo_nbr; // argv[1]
+    int time_to_die; // argv[2]
+    int time_to_eat; // argv[3]
+    int time_to_sleep; // argv[4]
+    int number_of_meals; // argv[5]
+    int start_simulation; // i can delete it in the end
+    int end_simulation; // i can delete it in the end
+    t_fork *forks; // to initialize to all the forks
+    t_philo *philos; // to initialize the philosophers
 }               t_table;
+
+/*data of the philosophers*/
+
 
 
 
