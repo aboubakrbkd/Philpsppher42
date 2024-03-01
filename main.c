@@ -6,13 +6,13 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/02/29 17:15:35 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/01 20:29:27 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	parse_argument_and_fill(char **argv, int argc, t_table *philo)
+void	parse_argument_and_fill(char **argv, t_table *philo)
 {
 	int i = 0;
 	while (argv[i])
@@ -21,12 +21,12 @@ void	parse_argument_and_fill(char **argv, int argc, t_table *philo)
 			print_error();
 		i++;
 	}
-	philo->philo_nbr = ft_atoi(argv[1]);
-	philo->time_to_die = ft_atoi(argv[2]);
-	philo->time_to_eat = ft_atoi(argv[3]);
-	philo->time_to_sleep = ft_atoi(argv[4]);
-	if (argv[5])
-		philo->number_of_meals = ft_atoi(argv[5]);
+	philo->philo_nbr = ft_atoi(argv[0]);
+	philo->time_to_die = ft_atoi(argv[1]);
+	philo->time_to_eat = ft_atoi(argv[2]);
+	philo->time_to_sleep = ft_atoi(argv[3]);
+	if (argv[4])
+		philo->number_of_meals = ft_atoi(argv[4]);
 	else
 		philo->number_of_meals = 0;
 }
@@ -83,6 +83,7 @@ void	philo_init(t_table *philos)
 		philo->table = philos;
 		/*assign forks*/
 		assign_forks(philo, philos->forks, i);
+		i++;
 	}
 }
 void	*data_init(t_table *philo)
@@ -102,6 +103,7 @@ void	*data_init(t_table *philo)
 		i++;
 	}
 	philo_init(philo);
+	return (NULL);
 }
 int main(int argc, char **argv)
 {
@@ -113,7 +115,7 @@ int main(int argc, char **argv)
 	}
 	else 
 	{
-		parse_argument_and_fill(argv + 1, argc, &philo);
+		parse_argument_and_fill(argv + 1, &philo); // all_good
 		data_init(&philo);
 	}
 }

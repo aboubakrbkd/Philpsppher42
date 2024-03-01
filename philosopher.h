@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:58:13 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/02/29 14:18:52 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/01 20:22:41 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 
 
 typedef struct s_table	t_table;
+
 /* data of the forks*/
 typedef struct s_fork
 {
@@ -65,9 +66,6 @@ typedef struct s_table
 }               t_table;
 
 /*data of the philosophers*/
-
-
-
 
 
 void	print_error();
