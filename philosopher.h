@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:58:13 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/02 17:30:48 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:07:16 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_philo
     int left_fork;
     int right_fork;
     time_t last_meal;
+    pthread_t thread;
     int must_eat;
     t_table *table;
 }               t_philo;

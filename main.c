@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/02 19:39:57 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:48:51 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,95 @@ void	*initialize_data(t_table *philo)
 	return (NULL);
 	
 }
+time_t	get_time_in_ms(void)
+{
+	time_t			time;
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time);
+}
+int ft_sleep(t_philo *philo, int flag)
+{
+	int time;
+	
+	time = get_time_in_ms();
+	while (get_time_in_ms() - time < flag)
+	{
+		pthread_mutex_lock(philo->table->meal);
+		if (get_time_in_ms() - philo->last_meal >= philo->table->time_to_die && philo->table->end_simulation == 0)
+		{
+			philo->table->end_simulation = 1;
+			philo->table->id_of_the_philo_died = philo->id;
+			philo->table->time_of_death = get_time_in_ms() - philo->table->star_simulation;
+			pthread_mutex_unlock(philo->table->meal);
+			pthread_mutex_unlock(&philo->table->forks[philo->left_fork]);
+			pthread_mutex_unlock(&philo->table->forks[philo->right_fork]);
+			return (1);
+		}
+		if (philo->table->end_simulation)
+		{
+			pthread_mutex_unlock(philo->table->meal);
+			pthread_mutex_unlock(&philo->table->forks[philo->left_fork]);
+			pthread_mutex_unlock(&philo->table->forks[philo->right_fork]);
+			return (1);			
+		}
+		pthread_mutex_unlock(philo->table->meal);
+		usleep(50);
+	}
+	return (0);
+}
+void	*ft_odd_phil(t_philo *philo)
+{
+	while (philo->must_eat)
+	{
+		pthread_mutex_lock(&philo->table->forks[philo->right_fork]);
+		printf("%ld %d %s\n", get_time_in_ms() - philo->table->star_simulation, philo->id, "has taken a fork");
+		pthread_mutex_lock(&philo->table->forks[philo->left_fork]);
+		printf("%ld %d %s\n", get_time_in_ms() - philo->table->star_simulation, philo->id, "has taken a fork");
+		printf("%ld %d %s\n", get_time_in_ms() - philo->table->star_simulation, philo->id, "is eating");
+		if (ft_sleep(philo, philo->table->time_to_eat))
+			break ;
+		philo->last_meal = get_time_in_ms();
+		pthread_mutex_unlock(&philo->table->forks[philo->left_fork]);
+		pthread_mutex_unlock(&philo->table->forks[philo->right_fork]);
+		printf("%ld %d %s\n", get_time_in_ms() - philo->table->star_simulation, philo->id, "is sleeping");
+		if (ft_sleep(philo, philo->table->time_to_sleep))
+			break ;
+		printf("%ld %d %s\n", get_time_in_ms() - philo->table->star_simulation, philo->id, "is thinking");
+		philo->must_eat--;
+	}
+	return (NULL);
+}
+void	*application(void *data)
+{
+	t_philo *philo = (t_philo *)data;
+	if (philo->id % 2 == 0)
+		usleep(100);
+	ft_odd_phil(philo);
+	return (NULL);
+}
+void	*start_dinner(t_table *philo)
+{
+	int i = 0;
+	philo->star_simulation = get_time_in_ms();
+	while (i < philo->philo_nbr)
+	{
+		philo->philo[i].last_meal = get_time_in_ms();
+		pthread_create(&philo->philo[i].thread, NULL, &application, &philo->philo[i]);
+		i++;
+	}
+	i = 0;
+	while (i < philo->philo_nbr)
+	{
+		pthread_join(philo->philo[i].thread, NULL);
+		i++;
+	}
+	if (philo->end_simulation == 1)
+		printf("%ld %d %s\n", get_time_in_ms() - philo->star_simulation, philo->id_of_the_philo_died, "died");
+	return (NULL);
+}
 int main(int argc, char **argv)
 {
 	t_table philo;
@@ -89,6 +178,7 @@ int main(int argc, char **argv)
 	{
 		parse_argument_and_fill(argv + 1, &philo);
 		initialize_data(&philo);
+		start_dinner(&philo);
 	}
 }
 
