@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:58:13 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/02 16:31:06 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/02 17:30:48 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,35 +33,33 @@
 typedef struct s_table	t_table;
 
 
-
-
-/*data of all*/
 typedef struct s_philo
 {
-    int         id;
-    int         meal_counter;
-    int         full;
-    int      left_fork; // a fork is a mutex
-    int      right_fork;
-    time_t         last_meal_time; // to check if the philosopher has die
-    pthread_t   thread_id;  // a philo is a thread;
-    t_table     *table;
+    int time_to_eat;
+    int id;
+    int left_fork;
+    int right_fork;
+    time_t last_meal;
+    int must_eat;
+    t_table *table;
 }               t_philo;
 
 typedef struct s_table
 {
-    int     philo_nbr;
-    int     time_to_die;
-    int     time_to_eat;
-    int     time_to_sleep;
-    int     number_of_meals;
-    int     end_time;
-    pthread_mutex_t  *forks;
-    pthread_mutex_t *meals;
-    t_philo *philos;
-    int index_of_the_philo_who_died;
     time_t time_of_death;
-    time_t  start_time;
+    int id_of_the_philo_died;
+    int philo_nbr;
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int number_of_meals;
+    time_t star_simulation;
+    int end_simulation;
+    int max_ate;
+    t_philo *philo;
+    pthread_mutex_t *forks;
+    pthread_mutex_t *log;
+    pthread_mutex_t *meal;
 }               t_table;
 
 /*data of the philosophers*/
