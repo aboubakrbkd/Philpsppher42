@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/03 16:46:53 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/03 17:58:50 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,16 +115,16 @@ void	ft_odd_phil(t_philo *philo)
 		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "has taken a fork");
 		pthread_mutex_lock(&philo->table->forks[philo->second_fork]);
 		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "has taken a fork");
-		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "is_eating");
+		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "is eating");
 		if (ft_sleep(philo, philo->table->time_to_eat))
 			break ;
 		philo->last_time_eat = get_time();
 		pthread_mutex_unlock(&philo->table->forks[philo->first_fork]);
 		pthread_mutex_unlock(&philo->table->forks[philo->second_fork]);
-		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "is_sleeping");
+		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "is sleeping");
 		if (ft_sleep(philo, philo->table->time_to_sleep))
 			break ;
-		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "is_thinking");
+		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "is thinking");
 		philo->must_eat--;
 	}
 }
