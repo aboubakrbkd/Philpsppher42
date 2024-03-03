@@ -71,9 +71,93 @@ int	initialize_data(t_table *philo)
 	return (0);
 }
 
+time_t	get_time(void)
+{
+	time_t			time;
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time);
+}
+
+void	ft_just_unlock(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->table->meal);
+	pthread_mutex_unlock(&philo->table->forks[philo->sc_fork]);
+	pthread_mutex_unlock(&philo->table->forks[philo->fr_fork]);
+}
+
+int ft_sleep(t_philo *philo, int time)
+{
+	int now;
+	now = get_time();
+	while (get_time() - now < time)
+	{
+		pthread_mutex_lock(philo->table->meal);
+		if (get_time() - philo->last_time_eat >= philo->table->time_to_die && philo->table->stop_sign == 0)
+		{
+			philo->table->stop_sign = 1;
+			philo->table->id_of_the_philo_died = philo->pos;
+			philo->table->time_of_death = get_time() - philo->table->star_time;
+			return (ft_just_unlock(philo), 1);
+		}
+		if (philo->table->stop_sign)
+			return (ft_just_unlock(philo), 1);
+		pthread_mutex_unlock(philo->table->meal);
+		usleep(100);
+	}
+	return (0);
+}
+void	ft_odd_phil(t_philo *philo)
+{
+	while (philo->must_eat)
+	{
+		pthread_mutex_lock(&philo->table->forks[philo->fr_fork]);
+		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->pos, "has taken a fork");
+		pthread_mutex_lock(&philo->table->forks[philo->sc_fork]);
+		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->pos, "has taken a fork");
+		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->pos, "is_eating");
+		if (ft_sleep(philo, philo->table->time_to_eat))
+			break ;
+		philo->last_time_eat = get_time();
+		pthread_mutex_unlock(&philo->table->forks[philo->fr_fork]);
+		pthread_mutex_unlock(&philo->table->forks[philo->sc_fork]);
+		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->pos, "is_sleeping");
+		if (ft_sleep(philo, philo->table->time_to_sleep))
+			break ;
+		printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->pos, "is_thinking");
+		philo->must_eat--;
+	}
+}
+void *application(void *data)
+{
+	t_philo *philo = (t_philo*)data;
+	
+	if (philo->pos % 2 == 0)
+		usleep(200);
+	ft_odd_phil(philo);
+	return (NULL);
+}
 int start_dinner(t_table *philo)
 {
-	
+	int i = 0;
+	philo->star_time = get_time();
+	while (i < philo->philo_nbr)
+	{
+		philo->philo[i].last_time_eat = get_time();
+		pthread_create(&philo->philo[i].thread, NULL, &application, &philo->philo[i]);
+		i++;
+	}
+	i = 0;
+	while (i < philo->philo_nbr)
+	{
+		pthread_join(philo->philo[i].thread, NULL);
+		i++;
+	}
+	if (philo->stop_sign == 1)
+		printf("%ld %d %s\n", get_time() - philo->star_time, philo->id_of_the_philo_died, "died");
+	return (0);
 }
 int main(int argc, char **argv)
 {
