@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/02 20:48:51 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/03 12:25:41 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_just_unlock(t_philo *philo)
 
 int ft_sleep(t_philo *philo, int time)
 {
-	int now;
+	long now;
 	now = get_time();
 	while (get_time() - now < time)
 	{

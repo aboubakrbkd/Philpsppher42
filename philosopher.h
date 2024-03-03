@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:58:13 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/02 20:07:16 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/03 12:21:41 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <sys/time.h>
 #include <limits.h>
-#include <sys/time.h> 
-
-
-#define INIT 0
-#define DESTROY 1
-#define LOCK 2
-#define UNLOCK 3
-#define CREAT 4
-#define JOIN 5 
-#define DETACH 6
-
 
 typedef struct s_table	t_table;
 
@@ -50,9 +40,9 @@ typedef struct s_table
     time_t time_of_death;
     int id_of_the_philo_died;
     int philo_nbr;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
+    long time_to_die;
+    long time_to_eat;
+    long time_to_sleep;
     int must_eat_count;
     time_t star_time;
     int stop_sign;
