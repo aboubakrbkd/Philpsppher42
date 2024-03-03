@@ -35,11 +35,11 @@ typedef struct s_table	t_table;
 
 typedef struct s_philo
 {
-    int time_to_eat;
-    int id;
-    int left_fork;
-    int right_fork;
-    time_t last_meal;
+    int times_ate;
+    int pos;
+    int fr_fork;
+    int sc_fork;
+    time_t last_time_eat;
     pthread_t thread;
     int must_eat;
     t_table *table;
@@ -53,9 +53,9 @@ typedef struct s_table
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
-    int number_of_meals;
-    time_t star_simulation;
-    int end_simulation;
+    int must_eat_count;
+    time_t star_time;
+    int stop_sign;
     int max_ate;
     t_philo *philo;
     pthread_mutex_t *forks;
