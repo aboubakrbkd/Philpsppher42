@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:58:13 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/03 12:21:41 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:40:37 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ typedef struct s_table	t_table;
 typedef struct s_philo
 {
     int times_ate;
-    int pos;
-    int fr_fork;
-    int sc_fork;
+    int id;
+    int first_fork;
+    int second_fork;
     time_t last_time_eat;
     pthread_t thread;
     int must_eat;
@@ -40,21 +40,20 @@ typedef struct s_table
     time_t time_of_death;
     int id_of_the_philo_died;
     int philo_nbr;
-    long time_to_die;
-    long time_to_eat;
-    long time_to_sleep;
-    int must_eat_count;
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int number_of_meals;
     time_t star_time;
     int stop_sign;
     int max_ate;
     t_philo *philo;
     pthread_mutex_t *forks;
-    pthread_mutex_t *log;
     pthread_mutex_t *meal;
 }               t_table;
 
 /*data of the philosophers*/
-
+/*i removed log*/
 
 void	print_error();
 long	ft_atoi(char *str);

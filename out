@@ -1,0 +1,10 @@
+0 3 has taken a fork
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is_eating
+100 2 has taken a fork
+100 3 has taken a fork
+100 3 is_eating
+100 2 has taken a fork
+100 2 is_eating
+100 1 died
