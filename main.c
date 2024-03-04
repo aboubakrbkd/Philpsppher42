@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/04 13:54:08 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:06:20 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	parse_argument_and_fill(char **argv, t_table *philo)
 		philo->number_of_meals = ft_atoi(argv[4]);
 	else
 		philo->number_of_meals = -1;
-	philo->time_of_death = 0;
-	philo->id_of_the_philo_died = 0;
 }
 
 void	unlock_mutexes(t_philo *philo)
@@ -43,7 +41,7 @@ void	unlock_mutexes(t_philo *philo)
 	pthread_mutex_unlock(&philo->table->forks[philo->first_fork]);
 }
 
-int	ft_sleep(t_philo *philo, int time)
+int	check_the_routine(t_philo *philo, int time)
 {
 	long	now;
 
@@ -71,19 +69,39 @@ int	ft_sleep(t_philo *philo, int time)
 	return (0);
 }
 
+void	*clean_all(t_table *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->philo_nbr)
+	{
+		pthread_mutex_destroy(&(philo->forks[i]));
+		i++;
+	}
+	pthread_mutex_destroy(philo->meal);
+	free(philo->forks);
+	free(philo->philo);
+	free(philo->meal);
+	return (NULL);
+}
+
 int	main(int argc, char **argv)
 {
 	t_table	philo;
 
 	if (argc != 5 && argc != 6)
-	{
-		printf("not enough\n");
-		exit(1);
-	}
+		print_error();
 	else
 	{
 		parse_argument_and_fill(argv + 1, &philo);
 		initialize_data(&philo);
-		start_l3cha(&philo);
+		if (start_dinner(&philo) == 1)
+		{
+			printf("Error creating the threads\n");
+			return (1);
+		}
+		clean_all(&philo);
 	}
+	return (0);
 }

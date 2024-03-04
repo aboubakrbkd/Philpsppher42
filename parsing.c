@@ -6,16 +6,16 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:27:03 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/02 12:48:26 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:22:41 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	print_error(void)
+int	print_error(void)
 {
 	printf("Error\n");
-	exit(1);
+	return (1);
 }
 
 long	ft_atoi(char *str)

@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:48:08 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/04 13:49:33 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:15:46 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,33 @@ int	initialize_forks_mutexex(t_table *philo)
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
-		pthread_mutex_init(&philo->forks[i], NULL);
+		if (pthread_mutex_init(&philo->forks[i], NULL) != 0)
+			return (1);
 		i++;
 	}
-	pthread_mutex_init(philo->meal, NULL);
+	if (pthread_mutex_init(philo->meal, NULL) != 0)
+		return (1);
 	return (0);
 }
 
-int	initialize_data(t_table *philo)
+void	*initialize_data(t_table *philo)
 {
 	philo->forks = malloc(sizeof(pthread_mutex_t) * philo->philo_nbr);
+	if (!philo->forks)
+		return (NULL);
 	philo->philo = malloc(sizeof(t_philo) * philo->philo_nbr);
+	if (!philo->philo)
+		return (NULL);
 	philo->meal = malloc(sizeof(pthread_mutex_t));
+	if (!philo->meal)
+		return (NULL);
 	initialize_philos(philo);
-	initialize_forks_mutexex(philo);
-	return (0);
+	if (initialize_forks_mutexex(philo) == -1)
+	{
+		printf("Error creating the forks mutex\n");
+		return (NULL);
+	}
+	return (NULL);
 }
 
 time_t	get_time(void)

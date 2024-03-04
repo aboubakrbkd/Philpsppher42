@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:58:13 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/04 13:51:40 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:48:41 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,19 @@ typedef struct s_table
 	pthread_mutex_t	*meal;
 }				t_table;
 
-void	print_error(void);
+int		print_error(void);
 long	ft_atoi(char *str);
 int		is_integer(char *str);
 int		is_negative(char *str);
 int		check_higher(char *str);
 int		initialize_philos(t_table *philo);
 int		initialize_forks_mutexex(t_table *philo);
-int		initialize_data(t_table *philo);
+void	*initialize_data(t_table *philo);
 time_t	get_time(void);
-int		start_l3cha(t_table *philo);
+int		start_dinner(t_table *philo);
 void	*application(void *data);
 void	*die_alone(t_philo *philo);
-void	ft_odd_phil(t_philo *philo);
-int		ft_sleep(t_philo *philo, int time);
+void	handle_the_odds(t_philo *philo);
+int		check_the_routine(t_philo *philo, int time);
+void	*clean_all(t_table *philo);
 #endif

@@ -6,13 +6,13 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:50:15 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/04 13:50:24 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:22:09 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	ft_odd_phil(t_philo *philo)
+void	handle_the_odds(t_philo *philo)
 {
 	while (philo->must_eat)
 	{
@@ -24,14 +24,14 @@ void	ft_odd_phil(t_philo *philo)
 			philo->id, "has taken a fork");
 		printf("%ld %d %s\n", get_time() - philo->table->star_time,
 			philo->id, "is eating");
-		if (ft_sleep(philo, philo->table->time_to_eat))
+		if (check_the_routine(philo, philo->table->time_to_eat))
 			break ;
 		philo->last_time_eat = get_time();
 		pthread_mutex_unlock(&philo->table->forks[philo->first_fork]);
 		pthread_mutex_unlock(&philo->table->forks[philo->second_fork]);
 		printf("%ld %d %s\n", get_time() - philo->table->star_time,
 			philo->id, "is sleeping");
-		if (ft_sleep(philo, philo->table->time_to_sleep))
+		if (check_the_routine(philo, philo->table->time_to_sleep))
 			break ;
 		printf("%ld %d %s\n", get_time() - philo->table->star_time,
 			philo->id, "is thinking");
@@ -68,11 +68,11 @@ void	*application(void *data)
 	}
 	if (philo->id % 2 == 0)
 		usleep(200);
-	ft_odd_phil(philo);
+	handle_the_odds(philo);
 	return (NULL);
 }
 
-int	start_l3cha(t_table *philo)
+int	start_dinner(t_table *philo)
 {
 	int	i;
 
@@ -81,14 +81,16 @@ int	start_l3cha(t_table *philo)
 	while (i < philo->philo_nbr)
 	{
 		philo->philo[i].last_time_eat = get_time();
-		pthread_create(&philo->philo[i].thread, NULL,
-			&application, &philo->philo[i]);
+		if (pthread_create(&philo->philo[i].thread, NULL,
+				&application, &philo->philo[i]) != 0)
+			return (1);
 		i++;
 	}
 	i = 0;
 	while (i < philo->philo_nbr)
 	{
-		pthread_join(philo->philo[i].thread, NULL);
+		if (pthread_join(philo->philo[i].thread, NULL) != 0)
+			return (1);
 		i++;
 	}
 	if (philo->stop_sign == 1)
