@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:58:13 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/04 15:48:41 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:07:58 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <limits.h>
+# define FORK "has taken a fork"
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define THINK "is thinking"
+# define DIED "died"
 
 typedef struct s_table	t_table;
 typedef struct s_philo

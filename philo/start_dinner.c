@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:50:15 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/04 15:22:09 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:05:11 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@ void	handle_the_odds(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->table->forks[philo->first_fork]);
 		printf("%ld %d %s\n", get_time() - philo->table->star_time,
-			philo->id, "has taken a fork");
+			philo->id, FORK);
 		pthread_mutex_lock(&philo->table->forks[philo->second_fork]);
 		printf("%ld %d %s\n", get_time() - philo->table->star_time,
-			philo->id, "has taken a fork");
+			philo->id, FORK);
 		printf("%ld %d %s\n", get_time() - philo->table->star_time,
-			philo->id, "is eating");
+			philo->id, EAT);
 		if (check_the_routine(philo, philo->table->time_to_eat))
 			break ;
 		philo->last_time_eat = get_time();
 		pthread_mutex_unlock(&philo->table->forks[philo->first_fork]);
 		pthread_mutex_unlock(&philo->table->forks[philo->second_fork]);
 		printf("%ld %d %s\n", get_time() - philo->table->star_time,
-			philo->id, "is sleeping");
+			philo->id, SLEEP);
 		if (check_the_routine(philo, philo->table->time_to_sleep))
 			break ;
 		printf("%ld %d %s\n", get_time() - philo->table->star_time,
-			philo->id, "is thinking");
+			philo->id, THINK);
 		philo->must_eat--;
 	}
 }
@@ -43,13 +43,13 @@ void	*die_alone(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->forks[philo->first_fork]);
 	printf("%ld %d %s\n", get_time() - philo->table->star_time,
-		philo->id, "is taking a fork");
+		philo->id, FORK);
 	while (1)
 	{
 		if (get_time() - philo->last_time_eat > philo->table->time_to_die)
 		{
 			printf("%ld %d %s\n", get_time() - philo->table->star_time,
-				philo->id, "died");
+				philo->id, DIED);
 			break ;
 		}
 	}
@@ -95,6 +95,6 @@ int	start_dinner(t_table *philo)
 	}
 	if (philo->stop_sign == 1)
 		printf("%ld %d %s\n", get_time() - philo->star_time,
-			philo->id_of_the_philo_died, "died");
+			philo->id_of_the_philo_died, DIED);
 	return (0);
 }
