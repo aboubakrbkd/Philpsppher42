@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/03 17:58:50 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 13:12:22 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,31 @@ void	ft_odd_phil(t_philo *philo)
 		philo->must_eat--;
 	}
 }
+void	*die_alone(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->table->forks[philo->first_fork]);
+	printf("%ld %d %s\n", get_time() - philo->table->star_time, philo->id, "is taking a fork");
+	while (1)
+	{
+		if (get_time() - philo->last_time_eat > philo->table->time_to_die)
+		{
+			philo->table->id_of_the_philo_died = philo->id;
+			philo->table->time_of_death = get_time() - philo->table->star_time;
+			philo->table->stop_sign = 1;
+			break ;
+		}
+	}
+	
+	return (NULL);
+}
 void *application(void *data)
 {
 	t_philo *philo = (t_philo*)data;
-	
+	if (philo->table->philo_nbr == 1)
+	{
+		die_alone(philo);
+		return (NULL);
+	}
 	if (philo->id % 2 == 0)
 		usleep(200);
 	ft_odd_phil(philo);
