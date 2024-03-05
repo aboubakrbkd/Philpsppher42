@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/04 16:59:06 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:25:06 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	main(int argc, char **argv)
 		initialize_data(&philo);
 		if (start_dinner(&philo) == 1)
 		{
-			printf("Error creating the threads\n");
+			clean_all(&philo);
 			return (1);
 		}
 		clean_all(&philo);
