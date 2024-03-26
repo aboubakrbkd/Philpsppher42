@@ -6,13 +6,13 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/04 18:25:06 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/26 00:49:22 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	parse_argument_and_fill(char **argv, t_table *philo)
+int	parse_argument_and_fill(char **argv, t_table *philo)
 {
 	int	i;
 
@@ -21,7 +21,7 @@ void	parse_argument_and_fill(char **argv, t_table *philo)
 	{
 		if (is_integer(argv[i]) || check_higher(argv[i])
 			|| is_negative(argv[i]))
-			print_error();
+			return (print_error());
 		i++;
 	}
 	philo->philo_nbr = ft_atoi(argv[0]);
@@ -32,6 +32,7 @@ void	parse_argument_and_fill(char **argv, t_table *philo)
 		philo->number_of_meals = ft_atoi(argv[4]);
 	else
 		philo->number_of_meals = -1;
+	return (0);
 }
 
 void	unlock_mutexes(t_philo *philo)
@@ -94,7 +95,8 @@ int	main(int argc, char **argv)
 		print_error();
 	else
 	{
-		parse_argument_and_fill(argv + 1, &philo);
+		if (parse_argument_and_fill(argv + 1, &philo))
+			return (1);
 		initialize_data(&philo);
 		if (start_dinner(&philo) == 1)
 		{
