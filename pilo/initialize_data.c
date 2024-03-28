@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:48:08 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/26 16:35:32 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/28 00:05:42 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*initialize_data(t_table *philo)
 	if (!philo->meal)
 		return (NULL);
 	initialize_philos(philo);
-	if (initialize_forks_mutexex(philo) == -1)
+	if (initialize_forks_mutexex(philo) == 1)
 	{
 		printf("Error creating the forks mutex\n");
 		return (NULL);
