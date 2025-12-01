@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread #-pthread
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 RM = rm -rf
 NAME = philo
 SRCS = main.c initialize_data.c parsing.c start_dinner.c

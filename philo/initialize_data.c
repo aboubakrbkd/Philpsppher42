@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:48:08 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/26 00:43:03 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/28 00:05:42 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	initialize_forks_mutexex(t_table *philo)
 	return (0);
 }
 
-void	*initialize_data(t_table *philo)
+char	*initialize_data(t_table *philo)
 {
 	philo->forks = malloc(sizeof(pthread_mutex_t) * philo->philo_nbr);
 	if (!philo->forks)
@@ -58,12 +58,12 @@ void	*initialize_data(t_table *philo)
 	if (!philo->meal)
 		return (NULL);
 	initialize_philos(philo);
-	if (initialize_forks_mutexex(philo) == -1)
+	if (initialize_forks_mutexex(philo) == 1)
 	{
 		printf("Error creating the forks mutex\n");
 		return (NULL);
 	}
-	return (NULL);
+	return ("OK");
 }
 
 time_t	get_time(void)

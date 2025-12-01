@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:57:58 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/26 00:49:22 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:00:11 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int	main(int argc, char **argv)
 	{
 		if (parse_argument_and_fill(argv + 1, &philo))
 			return (1);
-		initialize_data(&philo);
+		if (!initialize_data(&philo))
+			return (1);
 		if (start_dinner(&philo) == 1)
 		{
 			clean_all(&philo);

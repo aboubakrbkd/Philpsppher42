@@ -6,7 +6,7 @@
 /*   By: aboukdid <aboukdid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:58:13 by aboukdid          #+#    #+#             */
-/*   Updated: 2024/03/26 00:43:17 by aboukdid         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:42:21 by aboukdid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define THINK "is thinking"
 # define DIED "died"
 
+// #define malloc(x) NULL
 typedef struct s_table	t_table;
 typedef struct s_philo
 {
@@ -62,7 +63,7 @@ int		is_negative(char *str);
 int		check_higher(char *str);
 int		initialize_philos(t_table *philo);
 int		initialize_forks_mutexex(t_table *philo);
-void	*initialize_data(t_table *philo);
+char	*initialize_data(t_table *philo);
 time_t	get_time(void);
 int		start_dinner(t_table *philo);
 void	*application(void *data);
